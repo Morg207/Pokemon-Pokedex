@@ -47,4 +47,7 @@ Welcome to **PokéDex 151**, a sleek and responsive desktop application built wi
 ### 📦 Installation
 Be sure to install custom tkinter.
 
+Install dependencies:
+
+```bash
 pip install customtkinter
