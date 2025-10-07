@@ -1,5 +1,5 @@
 # Pokemon-Pokedex
-# 🧠 PokéDex 151 – A customtkinter-based First Gen Pokédex
+# 🧠 PokéDex 151 – A CustomTkinter-based First Gen Pokédex
 
 Welcome to **PokéDex 151**, a sleek and responsive desktop application built with **Python and customtkinter**! Explore the original 151 Pokémon from the Kanto region with real-time data from the [PokéAPI](https://pokeapi.co/). This app is designed to be lightweight, intuitive, and responsive — thanks to multithreading support!
 
