@@ -46,8 +46,10 @@ Welcome to **PokéDex 151**, a sleek and responsive desktop application built wi
 
 ### 📦 Installation
 Be sure to install custom tkinter.
+Install pillow to be able to work with images in tkinter
+Install requests to make network requests a breeze.
 
 Install dependencies:
 
 ```bash
-pip install customtkinter
+pip install customtkinter pillow requests
