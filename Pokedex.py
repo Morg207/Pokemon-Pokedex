@@ -72,11 +72,11 @@ class Pokedex:
              self.image_label.configure(text="No image available...")
              return
         image_response = requests.get(image_url)
-        pokemon_image = Image.open(io.BytesIO(image_response.content))
-        self.frames = []
-        for frame in ImageSequence.Iterator(pokemon_image):
-            resized_frame = frame.convert("RGBA").resize((230, 230), Image.Resampling.NEAREST)
-            ctk_frame = ctk.CTkImage(light_image=resized_frame, dark_image=resized_frame, size=(230, 230))
+        pokemon_image = Image.open(io.BytesIO(image_response.content)) #We have to wrap content (the raw image bytes) sent from the network in a bytes IO object so pillow can decode the raw image bytes.
+        self.frames = []                                               #BytesIO object allows the bytes to be read as a stream. Once the raw image bytes have been decoded into a gif, it's useable. 
+        for frame in ImageSequence.Iterator(pokemon_image): #This is just pillows way of extracting individual images from the gif.
+            resized_frame = frame.convert("RGBA").resize((230, 230), Image.Resampling.NEAREST) #Nearest neighbour resampling. Good for resizing pixel art sprites and graphics. 
+            ctk_frame = ctk.CTkImage(light_image=resized_frame, dark_image=resized_frame, size=(230, 230)) 
             self.frames.append(ctk_frame)
 
     def get_pokemon_data(self):
@@ -114,7 +114,7 @@ class Pokedex:
             self.frame_index %= len(self.frames)
             self.image_label.configure(image=self.frames[self.frame_index])
             self.frame_index += 1
-        self.image_label.after(100, self.run_pokemon_animation)
+        self.image_label.after(100, self.run_pokemon_animation) #Keep running this code on the gui thread periodically.
 
     def forward(self):
         self.pokemon_index += 1
@@ -125,8 +125,8 @@ class Pokedex:
         else:
             self.backward_button.configure(state="disabled")
             self.forward_button.configure(state="disabled")
-        threading.Thread(target=self.get_pokemon_data, daemon=True).start()
-
+        threading.Thread(target=self.get_pokemon_data, daemon=True).start() #Running this on a new thread so network requests won't freeze the application animations.
+                                                                            #It's a daemon thread because it's non-important. If the user closes the application, I want this thread to kill itself, not wait to finish.
     def backward(self):
         self.pokemon_index -= 1
         self.pokemon_index = self.clamp_pokemon_index()
@@ -138,7 +138,7 @@ class Pokedex:
         text_input = self.pokemon_entry.get().lower()
         for index, pokemon in enumerate(self.pokemon_urls):
             if pokemon["name"] == text_input:
-                if self.pokemon_index == index:
+                if self.pokemon_index == index: #If a pokemon name has already been searched and the user presses enter again, it won't make a needless network request.
                     return
                 self.pokemon_index = index
                 self.backward_button.configure(state="disabled")
@@ -150,7 +150,7 @@ class Pokedex:
     def get_pokemon_urls():
         url = "https://pokeapi.co/api/v2/pokemon?limit=151"
         response = requests.get(url)
-        if response.status_code != 200:
+        if response.status_code != 200: #HTTP spec says if error code other than 200, something went wrong.
             return []
         return response.json()["results"]
 
@@ -174,3 +174,4 @@ class Pokedex:
 if __name__ == "__main__":
     pokedex = Pokedex()
     pokedex.run_pokedex()
+
