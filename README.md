@@ -3,6 +3,8 @@
 
 Welcome to **PokéDex 151**, a sleek and responsive desktop application built with **Python and customtkinter**! Explore the original 151 Pokémon from the Kanto region with real-time data from the [PokéAPI](https://pokeapi.co/). This app is designed to be lightweight, intuitive, and responsive — thanks to multithreading support!
 
+Code is licensed under GPL 3.0, art assets are subject to their original restrictive license (No resell/redistribution).
+
 ---
 
 ## 🎯 Features
